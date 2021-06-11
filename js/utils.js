@@ -2,6 +2,17 @@ class MathUtil {
   static randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
+
+  static distanceOfValues(x1, x2) {
+    return Math.abs(x1 - x2);
+  }
+
+  static distanceOnPlane(x1, y1, x2, y2) {
+    let a = x1 - x2;
+    let b = y1 - y2;
+    return Math.sqrt((a * a) + (b * b)); //return c^2 in pythagorean theorm
+  }
+
 }
 
 function uuid(){
