@@ -1,3 +1,4 @@
+const workerData = document.getElementById("workerData");
 const canvas = document.getElementById("world");
 const ctx = canvas.getContext("2d");
 let names = ["Mark", "Johnny", "Joe", "Bob", "Ethan", "George", "Luke", "Bryan", "Max", "Matt"];
@@ -40,9 +41,22 @@ Start
 ================
 */
 
-function runGame() {
-  console.log("Tick")
+function runGameActions() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+  let workerHtml = "";
+  for (const worker of getWorkerList()) {
+    worker.move();
+    worker.tick();
+    worker.render(ctx);
+    workerHtml += `
+    <br>
+    Status: ${worker.status}
+    Net Worth: ${worker.netWorth}
+    `;
+  }
+
+  workerData.innerHTML = workerHtml;
   tickCount++;
 }
 
@@ -50,5 +64,5 @@ window.addEventListener("load", (event) => {
   createWorkers(10);
 
   startTime = Date.now();
-  gameLoop = setInterval(runGame, 50);
+  gameLoop = setInterval(runGameActions, 50);
 })
