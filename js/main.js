@@ -1,13 +1,9 @@
 const workerData = document.getElementById("workerData");
 const canvas = document.getElementById("world");
-canvas.onclick = function (mouse) {
-  console.log(mouse.offsetX);
-  console.log(mouse.offsetY);
-}
 const ctx = canvas.getContext("2d");
 const background = new Image();
 const buildings = new Image();
-let names = ["Mark", "Johnny", "Joe", "Bob", "Ethan", "George", "Luke", "Bryan", "Max", "Matt"];
+let names = ["Johnny", "Joe", "Bob", "Ethan", "George", "Luke", "Bryan", "Max", "Matt"];
 //3d array of locations of homes and their 'patios'.
 let workers = new Map();
 let tickCount = 1;
@@ -31,6 +27,24 @@ function getWorkerList() {
     workerList.push(worker)
   }
   return workerList;
+}
+
+function workerMove(id) {
+  let worker = getWorkerById(id);
+  if (worker == null) return; //should never happen
+  worker.goSomewhereNew();
+}
+
+function workerBehave(id) {
+  let worker = getWorkerById(id);
+  if (worker == null) return; //should never happen
+  worker.behavior += 10;
+}
+
+function workerMisbehave(id) {
+  let worker = getWorkerById(id);
+  if (worker == null) return; //should never happen
+  worker.behavior -= 10;
 }
 
 function createWorkers(count) {
@@ -97,24 +111,17 @@ Start
 function runGameActions() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(background, -10, -1, canvas.width, canvas.height);
-
-  let workerHtml = "";
   for (const worker of getWorkerList()) {
     let chance = MathUtil.randomNumber(0, 10);
     if (chance > 5) if (tickCount % 500 == 0 && worker.atDestination()) worker.goSomewhereNew();
     if (worker.onPath()) worker.move();
+    if (worker.behavior <= 40 && tickCount % 500 == 0) worker.deduct(10);
+    if (worker.netWorth == 0 || worker.behavior == 0) workers.delete(worker.id);
     worker.tick();
     worker.render(ctx);
-    workerHtml += `
-    <br>
-    Status: ${worker.status}
-    Net Worth: ${worker.netWorth}
-    `;
   }
 
-  //renderHomes(ctx);
   ctx.drawImage(buildings, 0, 0, canvas.width, canvas.height);
-  workerData.innerHTML = workerHtml;
   tickCount++;
 }
 
@@ -125,4 +132,38 @@ window.addEventListener("load", (event) => {
 
   startTime = Date.now();
   gameLoop = setInterval(runGameActions, 50);
+
+  setInterval( () => {
+    let workerHtml = "";
+    for (const worker of getWorkerList()) {
+      workerHtml += `
+      <div class="col-sm-12 col-lg-4 mt-5 mb-5" id="${worker.id}">
+        <div class="mx-auto w-75 border">
+          <ul>
+            <li><strong>Name:</strong> ${worker.name}</li>
+            <li><strong>Status:</strong> ${worker.status}</li>
+            <li><strong>Net Worth:</strong> ${worker.netWorth}</li>
+            <li><strong>Behavior:</strong> ${worker.behavior}</li>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" style="width: ${worker.behavior}%" aria-valuenow="${worker.behavior}" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </ul>
+          <div class="row mx-auto">
+            <div class="col-sm-8 p-2">
+              <button class="btn btn-danger" onclick="workerMisbehave('${worker.id}')">Misbehave</button>
+            </div>
+            <div class="col-sm-8 p-2">
+              <button class="btn btn-success" onclick="workerBehave('${worker.id}')">Behave</button>
+            </div>
+
+            <div class="col-sm-8 p-2">
+              <button class="btn btn-info" onclick="workerMove('${worker.id}')">Move</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      `;
+    }
+    workerData.innerHTML = workerHtml;
+  }, 500)
 })

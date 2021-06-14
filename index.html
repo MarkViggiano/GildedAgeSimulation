@@ -8,8 +8,10 @@
   </head>
   <body>
     <canvas id="world" width="1000" height="800" class="border m-auto"></canvas>
-
-    <div id="workerData" class="container w-50 border mx-auto mt-5 border-success"></div>
+    <div class="container mx-auto w-25 mt-3 mb-3 text-center">
+      <button class="btn btn-warning" onclick="createWorkers(1)">Create New Worker!</button>
+    </div>
+    <div id="workerData" class="row w-50 border mx-auto border-success"></div>
     <!-- MODULES -->
     <script type="text/javascript" src="./js/gameobject.js"></script>
     <script type="text/javascript" src="./js/utils.js"></script>

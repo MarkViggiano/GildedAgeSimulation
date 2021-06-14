@@ -25,7 +25,7 @@ class Citizen extends GameObject {
     this.movingOnPath = false;
     this.path;
     this.speed = 3;
-    this.behavior = MathUtil.randomNumber(30, 100);
+    this.behavior = MathUtil.randomNumber(70, 100);
     this.homeToFactory;
     this.factoryToHome;
     this.homeToShops;
@@ -63,6 +63,7 @@ class Citizen extends GameObject {
   }
 
   goSomewhereNew() {
+    if (this.onPath()) return; //don't let players override current path!
     let chance = MathUtil.randomNumber(0, 1);
     switch (this.status.toLowerCase()) {
       case "home":
@@ -76,6 +77,7 @@ class Citizen extends GameObject {
         break;
 
         case "factory":
+          this.pay(100, 0.35);
           if (chance == 0) {
             this.moveOnPath(this.factoryToHome);
             this.status = "home";
@@ -86,6 +88,7 @@ class Citizen extends GameObject {
           break;
 
           case "shops":
+            this.deduct(10);
             if (chance == 0) {
               this.moveOnPath(this.shopsToHome);
               this.status = "home";
@@ -172,6 +175,9 @@ class Citizen extends GameObject {
     if (this.behavior <= 40) {
       this.deduct(10);
     }
+
+    if (this.behavior < 0) this.behavior = 0;
+
 
   }
 
