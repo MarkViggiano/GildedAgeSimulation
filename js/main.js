@@ -51,6 +51,10 @@ function createWorkers(count) {
   let citizen, name, id, path; //optimization
   for (let i = 0; i < count; i++) {
     let home = homes[i];
+    if (count == 1) {
+      home = homes[MathUtil.randomNumber(0, homes.length - 1)];
+      i = homes.indexOf(home);
+    }
     let x = home[0][0];
     let y = home[0][1];
     name = names[MathUtil.randomNumber(0, names.length - 1)];
@@ -85,20 +89,6 @@ function createWorkers(count) {
     citizen.shopsToHome = path;
 
     citizen.goSomewhereNew();
-  }
-}
-
-/*
-================
-Home Management
-================
-*/
-
-function renderHomes(ctx) {
-  for (const home of homes) {
-    ctx.stroke();
-    ctx.fillStyle = "blue";
-    ctx.fillRect(home[0], home[1], 50, 50);
   }
 }
 

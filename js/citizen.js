@@ -5,13 +5,13 @@ let node1 = new Node(103, 150);
 let node2 = new Node(103, 341);
 let node3 = new Node(426, 350);
 let node4 = new Node(426, 501);
-
+let colors = ["red", "green", "blue", "yellow", "purple", "aqua", "lime", "brown", "orange", "magenta"];
 /**
 Requires gameobject.js to be referenced before this file
 **/
 class Citizen extends GameObject {
   constructor(x, y, name, id) {
-    super(x, y, 10, 20);
+    super(x, y, 10, 20, colors[MathUtil.randomNumber(0, colors.length - 1)]);
     this.homeX = x;
     this.homeY = y;
     this.factoryX = MathUtil.randomNumber(300, 700);
@@ -172,20 +172,9 @@ class Citizen extends GameObject {
     this.x += this.xVel;
     this.y += this.yVel;
 
-    if (this.behavior <= 40) {
-      this.deduct(10);
-    }
-
+    if (this.behavior <= 40) this.deduct(10);
     if (this.behavior < 0) this.behavior = 0;
 
-
-  }
-
-  render(ctx) {
-    ctx.stroke();
-    ctx.fillStyle = "red";
-    ctx.fillRect(this.x, this.y, this.width, this.height);
-    ctx.stroke();
   }
 
 }

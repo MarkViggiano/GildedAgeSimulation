@@ -1,10 +1,10 @@
 class GameObject {
-  constructor(x, y, width, height, image) {
+  constructor(x, y, width, height, color) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
-    this.image = image;
+    this.color = color;
     this.xVel = 0;
     this.yVel = 0;
   }
@@ -19,7 +19,9 @@ class GameObject {
   }
 
   render(ctx) {
-    ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+    ctx.stroke();
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.x, this.y, this.width, this.height);
     ctx.stroke();
   }
 
