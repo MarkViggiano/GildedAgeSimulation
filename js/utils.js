@@ -15,6 +15,26 @@ class MathUtil {
 
 }
 
+class Node {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  moveToNode(citizen) {
+    citizen.moveOnPath([[this.x, this.y]]);
+  }
+
+}
+
+function reverseListofList(items) {
+  for (var i = 0; i < items.length; i++) {
+    items[i] = items[i].reverse();
+  }
+
+  return items.reverse();
+}
+
 function uuid(){
     var dt = new Date().getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
