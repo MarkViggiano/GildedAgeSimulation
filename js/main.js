@@ -102,7 +102,7 @@ function runGameActions() {
   for (const worker of getWorkerList()) {
     let chance = MathUtil.randomNumber(0, 10);
     if (chance > 5) if (tickCount % 500 == 0 && worker.atDestination()) worker.goSomewhereNew();
-    worker.move();
+    if (worker.onPath()) worker.move();
     worker.tick();
     worker.render(ctx);
     workerHtml += `

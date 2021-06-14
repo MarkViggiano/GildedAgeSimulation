@@ -113,8 +113,8 @@ class Citizen extends GameObject {
 
   //path is 2d array containing x,y of where next to move similar to how 'homes' is a 2d array of home x,y
   moveOnPath(path) {
-    this.movingOnPath = true;
     this.path = path;
+    this.movingOnPath = true;
   }
 
   onPath() {
